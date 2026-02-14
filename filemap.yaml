@@ -17,8 +17,7 @@
   target: /tmp/justadir
   perms: 700
 
-- hosts: [localhost]
+- hosts: [somethingelseentirely]
   source: bar
   target: /tmp/bar
   perms: +x
-

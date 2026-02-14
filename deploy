@@ -1,13 +1,46 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-# This script parses the filemap.yaml file and outputs the changes it
-# would make to the targets on the current system (default: DRYRUN=true).
+'''
+This script parses the filemap.yaml file and outputs the changes it
+would make to the targets on the current system (default: DRYRUN=true).
+'''
 
-file=${1:-filemap.yaml}
+# DO NOT USE THIS AS A MODULE!
 
-#actions=($(yq '.[]') "$file")
-mapfile -t actions < <(yq -r '.[]' "$file")
+import sys
+import yaml
+import socket
+import pathlib
 
-for action in "${actions[@]}"; do
-	echo "$action"
-done
+hostname = socket.gethostname()
+exe = pathlib.Path(sys.argv[0]).resolve()
+base = exe.parent
+
+def _applies_to_host(item):
+    for host in item["hosts"]:
+        if host == "localhost" or host == hostname:
+            return True
+    return False
+
+def _source_exists(item):
+    return pathlib.Path(item["source"]).exists()
+
+file = base / "filemap.yaml"
+if len(sys.argv) > 1:
+    file = base / sys.argv[1]
+
+try:
+    with open(file, "r") as f:
+        items = yaml.safe_load(f)
+except FileNotFoundError:
+    print(f"{file} not found", file=sys.stderr)
+    sys.exit(1)
+except yaml.YAMLError as e:
+    print(f"Invalid YAML: {e}", file=sys.stderr)
+    sys.exit(1)
+
+for item in items:
+    print(f"source: {item["source"]}")
+    if not _applies_to_host(item): continue
+    if not _source_exists(item):   continue
+
