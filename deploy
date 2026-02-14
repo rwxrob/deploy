@@ -5,31 +5,11 @@ This script parses the filemap.yaml file and outputs the changes it
 would make to the targets on the current system (default: DRYRUN=true).
 '''
 
-# DO NOT USE THIS AS A MODULE!
+import pylib
 
-import sys
-import yaml
-import socket
-import pathlib
-
-hostname = socket.gethostname()
-exe = pathlib.Path(sys.argv[0]).resolve()
-base = exe.parent
-
-def applies_to_host(item):
-    for host in item["hosts"]:
-        if host == "localhost" or host == hostname:
-            return True
-    return False
-
-def source_exists(item):
-    return pathlib.Path(item["source"]).exists()
-
-file = base / "filemap.yaml"
+file = pylib.base / "filemap.yaml"
 if len(sys.argv) > 1:
-    file = base / sys.argv[1]
-
-if __name__ == '__main__':
+    file = pylib.base / sys.argv[1]
 
     try:
         with open(file, "r") as f:
