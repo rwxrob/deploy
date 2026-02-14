@@ -1,1 +1,13 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+# This script parses the filemap.yaml file and outputs the changes it
+# would make to the targets on the current system (default: DRYRUN=true).
+
+file=${1:-filemap.yaml}
+
+#actions=($(yq '.[]') "$file")
+mapfile -t actions < <(yq -r '.[]' "$file")
+
+for action in "${actions[@]}"; do
+	echo "$action"
+done
