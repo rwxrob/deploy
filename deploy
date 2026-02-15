@@ -5,16 +5,15 @@ would make to the targets on the current system (default: DRYRUN=true).
 """
 
 import sys
-import yaml
-from pylib import pylib
+import os
+from pylib import *
 
 if len(sys.argv) > 1:
-    items = pylib.parse_filemap(sys.argv[1])
+    items = parse_filemap(sys.argv[1])
 else:
-    items = pylib.parse_filemap()
+    items = parse_filemap()
 
-for item in items:
-    print(f"source: {item["source"]}")
-    if not pylib.applies_to_host(item): continue
-    if not pylib.source_exists(item):   continue
-
+if os.environ.get("DRYRUN") == "false":
+    deploy_changes(items)
+else:
+    preview_changes(items)
