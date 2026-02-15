@@ -8,6 +8,7 @@ hostname = socket.gethostname()
 exe = pathlib.Path(sys.argv[0]).resolve()
 base = exe.parent
 
+
 def applies_to_host(item):
     for host in item["hosts"]:
         if host == "localhost" or host == hostname:
@@ -16,3 +17,15 @@ def applies_to_host(item):
 
 def source_exists(item):
     return pathlib.Path(item["source"]).exists()
+
+def parse_filemap(path="filemap.yaml"):
+    try:
+        with open(path, "r") as f:
+            items = yaml.safe_load(f)
+    except FileNotFoundError:
+        print(f"{path} not found", file=sys.stderr)
+        sys.exit(1)
+    except yaml.YAMLError as e:
+        print(f"Invalid YAML: {e}", file=sys.stderr)
+        sys.exit(1)
+    return items
