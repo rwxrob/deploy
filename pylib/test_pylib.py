@@ -1,7 +1,7 @@
-from . import pylib
+from . import *
 
 def test_applies_to_host():
-    pylib.applies_to_host({"hosts":{}})
+    applies_to_host({"hosts":{}})
     assert(True)
 
 def test_source_exists():

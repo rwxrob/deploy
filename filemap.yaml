@@ -1,11 +1,11 @@
 # Old Syntax: HOST[,HOST...] SOURCE TARGET [OWNER[:GROUP]] [CHMOD_PERMS] [OPTIONS]
 
 - hosts: [localhost, iknowthis]
-  source: myscript
+  source: src/myscript
   target: /tmp/myscript
 
 - hosts: [localhost, iknowthis]
-  source: scripts/
+  source: src/scripts/
   target: ~/local/bin
   owner: rwxrob
   group: everyone
@@ -13,11 +13,11 @@
     - recurse
 
 - hosts: [localhost, iknowthis]
-  source: justadir/
+  source: src/justadir/
   target: /tmp/justadir
   perms: 700
 
 - hosts: [somethingelseentirely]
-  source: bar
+  source: src/bar
   target: /tmp/bar
   perms: +x
