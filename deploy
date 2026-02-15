@@ -7,14 +7,14 @@ would make to the targets on the current system (default: DRYRUN=true).
 import sys
 import os
 
-from pylib import deploy_changes, preview_changes, parse_filemap
+from pylib import deploy
 
 if len(sys.argv) > 1:
-    items = parse_filemap(sys.argv[1])
+    items = deploy.parse(sys.argv[1])
 else:
-    items = parse_filemap()
+    items = deploy.parse()
 
 if os.environ.get("DRYRUN") == "false":
-    deploy_changes(items)
+    deploy.push(items)
 else:
-    preview_changes(items)
+    deploy.preview(items)
