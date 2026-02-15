@@ -6,7 +6,8 @@ would make to the targets on the current system (default: DRYRUN=true).
 
 import sys
 import os
-from pylib import *
+
+from pylib import deploy_changes, preview_changes, parse_filemap
 
 if len(sys.argv) > 1:
     items = parse_filemap(sys.argv[1])
