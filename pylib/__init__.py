@@ -34,12 +34,17 @@ def parse_filemap(path="filemap.yaml"):
 
 
 def preview_changes(items):
+    changed = []
+    # TODO add exception handler
     for item in items:
-        print(f"source: {item['source']}")
         if not applies_to_host(item):
             continue
         if not source_exists(item):
             continue
+        res = gitdiff(item["source"], item["target"])
+        if res.returncode != 0:
+            changed.append(res)
+    return changed
 
 
 # TODO
