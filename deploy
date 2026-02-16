@@ -4,17 +4,15 @@ This script parses the filemap.yaml file and outputs the changes it
 would make to the targets on the current system (default: DRYRUN=true).
 """
 
-import sys
 import os
-
+import sys
 from pylib import deploy
 
+filemap = "filemap.yaml"
 if len(sys.argv) > 1:
-    items = deploy.parse(sys.argv[1])
-else:
-    items = deploy.parse()
+    filemap = sys.argv[1]
 
 if os.environ.get("DRYRUN") == "false":
-    deploy.push(items)
+    deploy.push(filemap)
 else:
-    deploy.preview(items)
+    deploy.preview(filemap)

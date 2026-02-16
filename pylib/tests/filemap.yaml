@@ -19,3 +19,7 @@
   source: src/bar
   target: dest/bar
   perms: +x
+
+- hosts: [localhost]
+  source: src/alink
+  target: dest/alink
