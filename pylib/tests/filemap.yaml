@@ -1,0 +1,25 @@
+- hosts: [localhost, iknowthis]
+  source: src/myscript
+  target: dest/myscript
+
+- hosts: [localhost, iknowthis]
+  source: src/scripts/
+  target: dest/local/bin
+  owner: rwxrob
+  group: everyone
+  options:
+    - recurse
+
+- hosts: [localhost, iknowthis]
+  source: src/justadir/
+  target: dest/justadir
+  perms: 700
+
+- hosts: [somethingelseentirely]
+  source: src/bar
+  target: dest/bar
+  perms: +x
+
+- hosts: [localhost]
+  source: src/alink
+  target: dest/alink
